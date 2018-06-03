@@ -6,7 +6,7 @@ public class Attach : MonoBehaviour {
 
     private DistanceJoint2D d;
     public List<GameObject> _blocks = new List<GameObject>();
-    public float force;
+    public float moveForce, jumpForce;
     private Rigidbody2D brb;
     private GameObject attachedBlock;
     private Rigidbody2D prb;
@@ -14,7 +14,7 @@ public class Attach : MonoBehaviour {
     private bool isAttached;
     public float offset;
     public int playerN;
-    private string controllerN;
+    private string controllerHorz, controllerVert;
 	void Start () {
         d = this.gameObject.GetComponent<DistanceJoint2D>();
 
@@ -22,7 +22,8 @@ public class Attach : MonoBehaviour {
         //brb2 = _block_1.GetComponent<Rigidbody2D>();
         prb = this.gameObject.GetComponent<Rigidbody2D>();
         plr = this.gameObject.GetComponent<LineRenderer>();
-        controllerN = "joystick" + playerN.ToString() + "Horz";
+        controllerHorz = "joystick" + playerN.ToString() + "Horz";
+        controllerVert = "joystick" + playerN.ToString() + "Vert";
 	}
 	
 	// Update is called once per frame
@@ -44,11 +45,11 @@ public class Attach : MonoBehaviour {
             Debug.Log("released");
         }
         if(Input.GetKey(KeyCode.LeftArrow)){
-            prb.AddForce(prb.velocity.normalized * force);
+            prb.AddForce(prb.velocity.normalized * moveForce);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            prb.AddForce(-prb.velocity.normalized * force);
+            prb.AddForce(-prb.velocity.normalized * moveForce);
 
         }
 	}
@@ -83,17 +84,42 @@ public class Attach : MonoBehaviour {
     public void AddForceInDirection()
     {
         Vector2 inputDirection = Vector2.zero;
-        inputDirection.x = Input.GetAxis(controllerN);
-        inputDirection.y = 0.0f;
+        inputDirection.x = Input.GetAxis(controllerHorz);
+
+        if(isAttached)
+        {
+            if (inputDirection.x < 0.2f)
+            {
+                prb.AddForce(PerpendicularClockwise(this.transform.position) * moveForce);
+            }
+            if (inputDirection.x > 0.2f)
+            {
+                prb.AddForce(PerpendicularCounterClockwise(this.transform.position) * moveForce);
+            } 
+        }
+        else
+        {
+            inputDirection.y = 0.0f;
+            prb.AddForce(inputDirection * moveForce * 4);
+        }
+
+
         //nputDirection.y = Input.GetAxis("Joystick1Vert");
         Debug.Log("Direction: " + inputDirection.ToString());
-        prb.AddForce(inputDirection * force);
+
     }
 
     public void MoveIn()
     {
         Debug.Log("MOVING IN");
         d.distance -= offset;
+    }
+
+    public void Jump()
+    {
+        Debug.Log("Jumping");
+        //Vector2 inputDirection = new Vector2(Input.GetAxis(controllerHorz),Input.GetAxis(controllerVert));  
+        prb.AddForce(Vector2.up * jumpForce);
     }
 
     public void MoveOut()
@@ -114,5 +140,15 @@ public class Attach : MonoBehaviour {
         }
         attachedBlock = closest;
         return closest.GetComponent<Rigidbody2D>();
+    }
+
+    public static Vector2 PerpendicularClockwise(Vector2 vector2)
+    {
+        return new Vector2(vector2.y, -vector2.x);
+    }
+
+    public static Vector2 PerpendicularCounterClockwise(Vector2 vector2)
+    {
+        return new Vector2(-vector2.y, vector2.x);
     }
 }

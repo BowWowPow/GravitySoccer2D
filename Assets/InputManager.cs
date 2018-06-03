@@ -17,6 +17,8 @@ public class InputManager : MonoBehaviour {
     public const string rbBtn2 = "rb_btn_2";
     public const string lbBtn2 = "lb_btn_2";
     public const string bBtn2 = "b_btn_2";
+    public const string aBtn1 = "a_btn";
+    public const string aBtn2 = "a_btn_2";
     public static InputManager _input_instance;
     public GameObject _player1;
     private Attach ply1attach;
@@ -65,6 +67,14 @@ public class InputManager : MonoBehaviour {
         if (Input.GetButton(lbBtn2))
         {
             ply2attach.MoveOut();
+        }
+        if (Input.GetButton(aBtn1))
+        {
+            ply1attach.Jump();
+        }
+        if (Input.GetButton(aBtn2))
+        {
+            ply2attach.Jump();
         }
 
 	}
