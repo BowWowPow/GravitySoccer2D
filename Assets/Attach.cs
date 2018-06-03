@@ -5,9 +5,10 @@ using UnityEngine;
 public class Attach : MonoBehaviour {
 
     private DistanceJoint2D d;
-    public GameObject _block, _block_2;
+    public List<GameObject> _blocks = new List<GameObject>();
     public float force;
     private Rigidbody2D brb;
+    private GameObject attachedBlock;
     private Rigidbody2D prb;
     private LineRenderer plr;
     private bool isAttached;
@@ -16,8 +17,9 @@ public class Attach : MonoBehaviour {
     private string controllerN;
 	void Start () {
         d = this.gameObject.GetComponent<DistanceJoint2D>();
-        brb1 = _block_1.GetComponent<Rigidbody2D>();
-        brb2 = _block_1.GetComponent<Rigidbody2D>();
+
+        //brb1 = _block_1.GetComponent<Rigidbody2D>();
+        //brb2 = _block_1.GetComponent<Rigidbody2D>();
         prb = this.gameObject.GetComponent<Rigidbody2D>();
         plr = this.gameObject.GetComponent<LineRenderer>();
         controllerN = "joystick" + playerN.ToString() + "Horz";
@@ -32,7 +34,7 @@ public class Attach : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.E))
         {
             d.enabled = true;
-            d.connectedBody = brb;
+            d.connectedBody = FindClosestAttachPoint();
             Debug.Log("pressed");
         }
         if(Input.GetKeyUp(KeyCode.E))
@@ -54,7 +56,7 @@ public class Attach : MonoBehaviour {
     public void AttachTo()
     {
         d.enabled = true;
-        d.connectedBody = brb;
+        d.connectedBody = FindClosestAttachPoint();
         prb.freezeRotation = true;
         isAttached = true;
         plr.enabled = false;
@@ -74,7 +76,7 @@ public class Attach : MonoBehaviour {
     private void RenderLine()
     {
         plr.SetPosition(0,this.transform.position);
-        plr.SetPosition(1,_block.transform.position);
+        plr.SetPosition(1,attachedBlock.transform.position);
         plr.enabled = true;
     }
 
@@ -98,5 +100,19 @@ public class Attach : MonoBehaviour {
     {
         Debug.Log("MOVING OUT");
         d.distance += offset;
+    }
+
+    public Rigidbody2D FindClosestAttachPoint()
+    {
+        GameObject closest = _blocks[0];
+        foreach(GameObject temp in _blocks)
+        {
+            if(Vector3.Distance(transform.position,closest.transform.position) > Vector3.Distance(transform.position,temp.transform.position))
+            {
+                closest = temp;
+            }
+        }
+        attachedBlock = closest;
+        return closest.GetComponent<Rigidbody2D>();
     }
 }
