@@ -13,7 +13,7 @@ public class Goal : MonoBehaviour {
     private GameManager gm;
 	void Start () {
         textLeft = GameObject.FindWithTag("UILeft");
-        textRight = GameObject.FindWithTag("UILeft");
+        textRight = GameObject.FindWithTag("UIRight");
         lt = textLeft.GetComponent<Text>();
         rt = textRight.GetComponent<Text>();
         gm = GameObject.FindWithTag("MainCamera").GetComponent<GameManager>();
@@ -26,7 +26,7 @@ public class Goal : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Ball In Goal");
+        //Debug.Log("Ball In Goal");
         if(collision.transform.tag == "Ball")
         {
             
@@ -35,7 +35,7 @@ public class Goal : MonoBehaviour {
                 gm.AddGoal(1);
                 rt.text = gm.GetScoreRight().ToString();
             }
-            if (goal == 1)
+            else
             {
                 gm.AddGoal(0);
                 lt.text = gm.GetScoreLeft().ToString();

@@ -36,7 +36,7 @@ public class Attach : MonoBehaviour {
         {
             d.enabled = true;
             d.connectedBody = FindClosestAttachPoint();
-            Debug.Log("pressed");
+            //Debug.Log("pressed");
         }
         if(Input.GetKeyUp(KeyCode.E))
         {
@@ -61,7 +61,7 @@ public class Attach : MonoBehaviour {
         prb.freezeRotation = true;
         isAttached = true;
         plr.enabled = false;
-        Debug.Log("pressed"); 
+        //Debug.Log("pressed"); 
     }
 
     public void DetatchFrom()
@@ -71,7 +71,7 @@ public class Attach : MonoBehaviour {
         plr.enabled = false;
         isAttached = false;
         d.connectedBody = null;
-        Debug.Log("released");
+        //Debug.Log("released");
     }
 
     private void RenderLine()
@@ -105,26 +105,26 @@ public class Attach : MonoBehaviour {
 
 
         //nputDirection.y = Input.GetAxis("Joystick1Vert");
-        Debug.Log("Direction: " + inputDirection.ToString());
+        //Debug.Log("Direction: " + inputDirection.ToString());
 
     }
 
     public void MoveIn()
     {
-        Debug.Log("MOVING IN");
+        //Debug.Log("MOVING IN");
         d.distance -= offset;
     }
 
     public void Jump()
     {
-        Debug.Log("Jumping");
+        //Debug.Log("Jumping");
         //Vector2 inputDirection = new Vector2(Input.GetAxis(controllerHorz),Input.GetAxis(controllerVert));  
         prb.AddForce(Vector2.up * jumpForce);
     }
 
     public void MoveOut()
     {
-        Debug.Log("MOVING OUT");
+        //Debug.Log("MOVING OUT");
         d.distance += offset;
     }
 

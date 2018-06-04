@@ -36,10 +36,12 @@ public class GameManager : MonoBehaviour {
         if(team == 0)
         {
             ls += 1; 
+            //Debug.Log("LS: "+ls.ToString());
         }
         if(team == 1)
         {
             rs += 1;
+            //Debug.Log("RS: " + rs.ToString());
         }
         RespawnBall();
     }

@@ -53,7 +53,7 @@ public class InputManager : MonoBehaviour {
             ply1attach.MoveOut();
         }
         if (Input.GetButtonDown(xBtn2))
-        {
+        {   
             ply2attach.AttachTo();
         }
         if (Input.GetButtonUp(xBtn2))
@@ -83,8 +83,8 @@ public class InputManager : MonoBehaviour {
     {
         foreach (KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
         {
-            if (Input.GetKeyDown(kcode))
-                Debug.Log("KeyCode down: " + kcode);
+            //if (Input.GetKeyDown(kcode))
+                //Debug.Log("KeyCode down: " + kcode);
         }
     }
 
